@@ -1,1 +1,1 @@
-C:\Users\macar\Documents\Programing\WhistleTrace\x64\Debug\WhistleTrace.lib
+C:\Users\macar\Documents\Programing\WhistleTrace\x64\Debug\WhistleTrace.exe

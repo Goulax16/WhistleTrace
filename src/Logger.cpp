@@ -5,6 +5,7 @@
 
 std::string current_color;
 Level level = INFO;
+CLevel clevel = CLevel("INFO");
 Color color = Color("#FFF");
 
 void Logger::changeColor(const std::string& hexcode) {
@@ -40,8 +41,6 @@ std::string Logger::returnLevel() const {
         return "ERROR";
     case FATAL:
         return "FATAL";
-    case CUSTOM:
-        return "CUSTOM"; // You can customize this further if needed
     default:
         return "UNKNOWN"; // In case of an invalid level
     }
@@ -51,6 +50,9 @@ void Logger::setLevel(Level newLevel) {
     level = newLevel; // Update the log level
 }
 
+void Logger::setLevel(CLevel newLevel) {
+    clevel = newLevel; // Update the log level
+}
 
 void Logger::printLog(std::string value) {
     std::cout << current_color << "[" + getTime() + +"] " << "[" + returnLevel() + "] " << value << "\033[0m" << '\n';
@@ -89,6 +91,18 @@ void Logger::printLog(std::string value, Level logLevel, Color ccolor) {
     setLevel(previousLevel);
 }
 
+void Logger::printLog(std::string value, CLevel logLevel, Color ccolor) {
+    Color prevColor = color;
+    Level previousLevel = level;
+
+    changeColor(ccolor.toAnsi());
+    setLevel(logLevel);
+    std::cout << ccolor.toAnsi() << "[" + getTime() + +"] " << "[" + logLevel.value + "] " << value << "\033[0m" << '\n';
+
+    changeColor(prevColor.toAnsi());
+    setLevel(previousLevel);
+}
+
 void Logger::printLog(std::string value, Level logLevel) {
     Level previousLevel = level; // Guarda el nivel actual
     setLevel(logLevel); // Establece el nuevo nivel
@@ -100,6 +114,17 @@ void Logger::printLog(std::string value, Level logLevel) {
     if (logLevel == FATAL) {
         std::exit(EXIT_FAILURE);
     }
+
+    // Restaura el nivel anterior
+    setLevel(previousLevel);
+}
+
+void Logger::printLog(std::string value, CLevel logLevel) {
+    Level previousLevel = level; // Guarda el nivel actual
+    setLevel(logLevel); // Establece el nuevo nivel
+
+    // Imprime el log con el nuevo nivel
+    std::cout << current_color << "[" + getTime() + "] " << "[" + logLevel.value + "] " << value << "\033[0m" << '\n';
 
     // Restaura el nivel anterior
     setLevel(previousLevel);
@@ -139,6 +164,28 @@ void Logger::printLog(std::string value, Level logLevel, Color ccolor, Context c
     setLevel(previousLevel);
 }
 
+void Logger::printLog(std::string value, CLevel logLevel, Color ccolor, Context context) {
+    Color prevColor = color;
+    Level previousLevel = level;
+
+    changeColor(ccolor.toAnsi());
+    setLevel(logLevel);
+
+    // Construir el mensaje
+    std::ostringstream oss;
+    oss << ccolor.toAnsi() << "[" << getTime() << "] ";
+
+    // Agregar contexto como string
+    oss << "[" << contextToString(context) << "/" << logLevel.value << "] ";
+
+    oss << value << "\033[0m" << '\n'; // Agregar el valor y restable // cer el color
+    std::cout << oss.str();
+
+    // Restaurar el color y nivel anteriores
+    changeColor(prevColor.toAnsi());
+    setLevel(previousLevel);
+}
+
 void Logger::printLog(std::string value, Level logLevel, Color ccolor, CContext context) {
     Color prevColor = color;
     Level previousLevel = level;
@@ -159,6 +206,32 @@ void Logger::printLog(std::string value, Level logLevel, Color ccolor, CContext 
     // Restaurar el color y nivel anteriores
     changeColor(prevColor.toAnsi());
     setLevel(previousLevel);
+}
+
+void Logger::printLog(std::string value, CLevel logLevel, Color ccolor, CContext context) {
+    Color prevColor = color;
+    Level previousLevel = level;
+
+    changeColor(ccolor.toAnsi());
+    setLevel(logLevel);
+
+    // Construir el mensaje
+    std::ostringstream oss;
+    oss << ccolor.toAnsi() << "[" << getTime() << "] ";
+
+    // Agregar contexto como string
+    oss << "[" << context.value << "/" << logLevel.value << "] ";
+
+    oss << value << "\033[0m" << '\n'; // Agregar el valor y restable // cer el color
+    std::cout << oss.str();
+
+    // Restaurar el color y nivel anteriores
+    changeColor(prevColor.toAnsi());
+    setLevel(previousLevel);
+}
+
+int main() {
+
 }
 
 #endif

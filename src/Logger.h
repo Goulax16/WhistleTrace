@@ -63,8 +63,7 @@ enum Level {
     WARNING,
     INFO,
     ERROR,
-    FATAL,
-    CUSTOM
+    FATAL
 };
 
 enum Context {
@@ -84,6 +83,14 @@ struct CContext {
     }
 };
 
+struct CLevel {
+    std::string value;
+
+    CLevel(std::string value) : value(value) {
+        this->value = value;
+    }
+};
+
 std::string contextToString(Context context);
 
 class Logger
@@ -95,11 +102,16 @@ public:
     void printLog(std::string value);
     void printLog(std::string value, Color hex);
     void printLog(std::string value, Level logLevel);
+    void printLog(std::string value, CLevel logLevel);
     void printLog(std::string value, Level logLevel, Color hex);
+    void printLog(std::string value, CLevel logLevel, Color hex);
     void printLog(std::string value, Level logLevel, Color hex, Context context);
+    void printLog(std::string value, CLevel logLevel, Color hex, Context context);
     void printLog(std::string value, Level logLevel, Color hex, CContext context);
+    void printLog(std::string value, CLevel logLevel, Color hex, CContext context);
 
     void setLevel(Level newLevel);
+    void setLevel(CLevel newLevel);
 
 
     std::string returnLevel() const;
@@ -152,6 +164,26 @@ std::string concatenate(Args... args) {
 #ifndef LOG_FATAL_CCONTEXT_DEFINED
 #define LOG_FATAL_CCONTEXT_DEFINED
 #define LOG_FATAL(logger, color, ccontext, ...) logger.printLog(concatenate(__VA_ARGS__), FATAL, color, ccontext)
+#endif
+
+#ifndef PRINT_LOG_DEFINED
+#define PRINT_LOG_DEFINED
+#define PRINT_LOG(logger, color, level, context, ...) logger.printLog(concatenate(__VA_ARGS__), level, color, context);
+#endif
+
+#ifndef PRINT_LOG_DEFINED_CLEVEL
+#define PRINT_LOG_DEFINED_CLEVEL
+#define PRINT_LOG(logger, color, clevel, context, ...) logger.printLog(concatenate(__VA_ARGS__), clevel, color, context);
+#endif
+
+#ifndef PRINT_LOG_DEFINED_CLEVEL_CCONTEXT
+#define PRINT_LOG_DEFINED_CLEVEL_CCONTEXT
+#define PRINT_LOG(logger, color, clevel, ccontext, ...) logger.printLog(concatenate(__VA_ARGS__), clevel, color, ccontext);
+#endif
+
+#ifndef PRINT_LOG_DEFINED_CCONTEXT
+#define PRINT_LOG_DEFINED_CCONTEXT
+#define PRINT_LOG(logger, color, level, ccontext, ...) logger.printLog(concatenate(__VA_ARGS__), level, color, ccontext);
 #endif
 
 #define COLOR_RED Color(255, 0, 0)
