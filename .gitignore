@@ -1,0 +1,41 @@
+# Archivos de compilación
+*.o
+*.obj
+*.exe
+*.out
+*.dll
+*.lib
+*.pdb
+*.idb
+*.ilk
+*.sdf
+*.suo
+*.user
+*.ncb
+*.aps
+*.pch
+*.ipch
+*.tlog
+*.log
+
+# Archivos de configuración de Visual Studio
+.vs/
+.vscode/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.user
+*.userprefs
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos temporales
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Archivos de documentación generada
+docs/_build/
