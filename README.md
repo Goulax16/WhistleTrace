@@ -6,7 +6,7 @@ WhistleTrace is a simple and extensible logging library that allows efficient ma
 
 - **Context Levels**: Supports Context to print a log with another information by using the predifined ones or create a custom another using CContext("Context").
   
-  > **Predifined Levels**
+  > **Predifined Contexts**
   > - Rendering  (For operations related to graphics or web, like OpenGL or Treefrog Framework)
   > - Initialization (For things like init functions or Initialize a program)
   > - FileIO (For file input/output operations in the program)
@@ -19,10 +19,28 @@ WhistleTrace is a simple and extensible logging library that allows efficient ma
 
 - **Built-in color management**: Native color management for text. Handles RGB and hexadecimal with 24 predefined colors.
 
-- **Level System**: .
+- **Level System**: Types of level already built-in to indicate log importance. The level can be a custom one using CLevel("Level")
+
+> **Predifined Levels**
+> - WARNING
+> - INFO
+> - ERROR
+> - FATAL (Fatal closes the program. This is subject to change)
 
 ## Installation
 
-To use WhistleTrace, simply include the header files in your project. No external dependencies are required.
+To use WhistleTrace, include the header in your project and set cpp level to c++17
 
-`` #include "Logger.h" ``
+```cpp
+Logger log;
+
+log.printLog(CContext("Test"), CLevel("Test"), Color("#fff"), "Test");
+```
+but it can't print more than one string. For that you need to do this:
+```cpp
+Logger log;
+
+PRINT_LOG(log, Color("#FFF"), CLevel("Test"), CContext("Test"), "This", "is", "a", "test");
+```
+
+If you find bugs be free to publish in Github issue tab or a PR.
